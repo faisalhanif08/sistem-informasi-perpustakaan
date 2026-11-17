@@ -1,0 +1,19 @@
+{
+  "name": "perpustakaan-mvc",
+  "version": "1.0.0",
+  "description": "Sistem Perpustakaan Digital (frontend MVC + backend Express.js + MySQL/MariaDB)",
+  "main": "server/app.js",
+  "private": true,
+  "scripts": {
+    "start": "node server/app.js",
+    "dev": "node --watch server/app.js",
+    "db:init": "node server/scripts/initDb.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "dotenv": "^18.0.10",
+    "express": "^5.3.0",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.24.6"
+  }
+}
