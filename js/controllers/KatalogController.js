@@ -18,8 +18,8 @@ const KatalogController = {
   },
   // detailBuku(idBuku) -> Buku.ambilDetailDanStok(idBuku)
   async detailBuku(idBuku) {
-    const { detail, stok } = await Buku.ambilDetailDanStok(idBuku);
-    HalamanKatalog.tampilkanDetail(detail, stok);
+    const { detail, stok, ketentuan } = await Buku.ambilDetailDanStok(idBuku);
+    HalamanKatalog.tampilkanDetail(detail, stok, ketentuan);
   },
   // khusus Pustakawan: ubahStok(idBuku, selisih) -> Buku.ubahStok()
   async ubahStok(idBuku, selisih) {

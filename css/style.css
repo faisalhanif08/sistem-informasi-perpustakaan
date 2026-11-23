@@ -728,6 +728,15 @@ th {
   background: #e7f6ee;
   color: var(--ok);
 }
+.info-reservasi {
+  margin: 10px 0;
+  padding: 10px 12px;
+  background: #eef4ff;
+  border: 1px solid #c7d7f5;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.6;
+}
 .info-denda {
   margin-top: 14px;
   padding: 14px 16px;

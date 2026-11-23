@@ -136,7 +136,8 @@ const HalamanKatalog = {
     return KatalogController.detailBuku(idBuku);
   },
 
-  tampilkanDetail(b, stok) {
+  tampilkanDetail(b, stok, ketentuan) {
+    const k = ketentuan || { masaAmbilHari: 2, lamaPinjamHari: 7 };
     const inWish = () => wishlist().includes(b.id);
     const isPustakawan = !!(Pengguna.sesi && Pengguna.sesi.peran === "Pustakawan");
     // Pustakawan: kontrol stok; Pemustaka/tamu: tombol reservasi
@@ -149,7 +150,11 @@ const HalamanKatalog = {
             <button class="btn primary" id="btnTambahStok" title="Tambah stok">➕ Tambah</button>
           </div>
         </div>`
-      : `<button class="btn primary block" id="btnRes">📅 Reservasi Buku</button>`;
+      : `<button class="btn primary block" id="btnRes">📅 Reservasi Buku</button>
+        <div class="info-reservasi" id="infoRes">
+          <div>⏰ <b>Batas pengambilan:</b> ${k.masaAmbilHari} hari setelah reservasi</div>
+          <div>📆 <b>Batas pengembalian:</b> ${k.lamaPinjamHari} hari setelah buku diambil</div>
+        </div>`;
     app.innerHTML = `
     <div class="crumb">🏠 <span class="sep">|</span> <a href="#/">Katalog Buku</a> <span class="sep">›</span> <span>Detail Buku</span></div>
     <section class="panel">

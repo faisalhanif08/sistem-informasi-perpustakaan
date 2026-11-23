@@ -1,5 +1,6 @@
 /* ===== CONTROLLER (server): Katalog (SD-04) ===== */
 const Buku = require("../models/Buku");
+const Reservasi = require("../models/Reservasi");
 
 const KatalogController = {
   // GET /api/buku?q=&kategori=&penulis=&tahun=&urut=
@@ -21,7 +22,8 @@ const KatalogController = {
       return res.status(400).json({ pesan: "ID buku tidak valid." });
     const b = await Buku.ambilDetailDanStok(id);
     if (!b) return res.status(404).json({ pesan: "Buku tidak ditemukan." });
-    res.json({ detail: b, stok: b.stock });
+    // ketentuan = { masaAmbilHari, lamaPinjamHari } untuk info batas ambil & kembali
+    res.json({ detail: b, stok: b.stock, ketentuan: await Reservasi.ketentuan() });
   },
 
   // PATCH /api/buku/:id/stok  { selisih }  (khusus Pustakawan)

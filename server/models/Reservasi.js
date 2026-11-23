@@ -10,6 +10,22 @@ const MASA_AMBIL_HARI = 2;
 const BATAS_AMBIL = `IF(r.status = 'Aktif',
   DATE_FORMAT(DATE_ADD(r.tglReservasi, INTERVAL ${MASA_AMBIL_HARI} DAY), '%Y-%m-%d'), '-')`;
 
+// Lama pinjam (hari) dari KonfigurasiSistem, bawaan 7 hari
+const LAMA_PINJAM = "COALESCE((SELECT maxHariPinjam FROM KonfigurasiSistem WHERE idKonfigurasi = 1), 7)";
+
+// Batas pengembalian:
+//  - 'Disetujui' -> tglJatuhTempo transaksi Peminjaman yang dibuat dari reservasi ini
+//  - 'Aktif'     -> perkiraan paling lambat (batas ambil + lama pinjam)
+//  - lainnya     -> '-'
+const BATAS_KEMBALI = `CASE
+  WHEN r.status = 'Disetujui' THEN COALESCE((
+    SELECT DATE_FORMAT(p.tglJatuhTempo, '%Y-%m-%d') FROM Peminjaman p
+    WHERE p.idAnggota = r.idPengguna AND p.idBuku = r.idBuku AND p.tglPinjam >= r.tglReservasi
+    ORDER BY p.tglPinjam ASC, p.idTransaksi ASC LIMIT 1), '-')
+  WHEN r.status = 'Aktif' THEN DATE_FORMAT(DATE_ADD(r.tglReservasi,
+    INTERVAL (${MASA_AMBIL_HARI} + ${LAMA_PINJAM}) DAY), '%Y-%m-%d')
+  ELSE '-' END`;
+
 const Reservasi = {
   async simpanReservasi(idPengguna, idBuku, conn) {
     const id = buatId("RSV");
@@ -19,7 +35,8 @@ const Reservasi = {
       [id, idPengguna, idBuku],
     );
     const [rows] = await conn.query(
-      `SELECT r.idReservasi AS id, r.tglReservasi AS reservedAt, ${BATAS_AMBIL} AS expiresAt
+      `SELECT r.idReservasi AS id, r.tglReservasi AS reservedAt, ${BATAS_AMBIL} AS expiresAt,
+              ${BATAS_KEMBALI} AS returnBy, ${LAMA_PINJAM} AS lamaPinjam
        FROM Reservasi r WHERE r.idReservasi = ?`,
       [id],
     );
@@ -63,12 +80,19 @@ const Reservasi = {
   async cariReservasi(idPengguna) {
     const [rows] = await pool.query(
       `SELECT r.idReservasi AS id, r.idBuku AS bookId, b.judul AS bookTitle,
-              r.tglReservasi AS reservedAt, ${BATAS_AMBIL} AS expiresAt, r.status
+              r.tglReservasi AS reservedAt, ${BATAS_AMBIL} AS expiresAt,
+              ${BATAS_KEMBALI} AS returnBy, r.status
        FROM Reservasi r JOIN Buku b ON b.idBuku = r.idBuku
        WHERE r.idPengguna = ? ORDER BY r.tglReservasi DESC, r.idReservasi DESC`,
       [idPengguna],
     );
     return rows;
+  },
+
+  // Ketentuan reservasi untuk ditampilkan ke pemustaka di halaman detail buku
+  async ketentuan(conn = pool) {
+    const [rows] = await conn.query(`SELECT ${LAMA_PINJAM} AS lamaPinjam`);
+    return { masaAmbilHari: MASA_AMBIL_HARI, lamaPinjamHari: Number(rows[0].lamaPinjam) };
   },
 
   async hitungReservasiAktif() {

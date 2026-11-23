@@ -1,24 +1,3 @@
--- =====================================================================
--- DATABASE: Sistem Perpustakaan Digital
--- Sumber  : DDL "Kelompok 1_Modul 3" bagian 4.1 (Data Definition Language)
--- Kompatibel: MySQL 8.x / MariaDB 10.x+
--- Jalankan lewat:  npm run db:init   (atau import manual di phpMyAdmin)
--- PERINGATAN: script ini MENGHAPUS & membuat ulang semua tabel.
---
--- Catatan penyesuaian terhadap DDL di PDF:
---  * Nama tabel, nama kolom, dan tipe data mengikuti PDF. PRIMARY KEY dan
---    FOREIGN KEY ditambahkan sesuai relasi antar-tabel di PDM.
---  * Kolom bertanda  [tambahan]  tidak ada di PDF, tetapi dibutuhkan oleh
---    fitur aplikasi (katalog, filter, detail buku, riwayat).
---  * Kolom bertanda  [diperbesar]  ukurannya dinaikkan dari PDF karena
---    nilainya tidak muat (hash bcrypt = 60 karakter).
---  * Tabel HalamanDetailBuku, HalamanKonfigurasi, HalamanSirkulasi, dan
---    "konfirmasiReservasi(" TIDAK dibuat: isinya method (tipe VOID) milik
---    kelas boundary/antarmuka, bukan data, dan VOID bukan tipe data SQL.
---  * Tabel Pengguna yang tercantum dua kali di PDF digabung menjadi satu
---    (versi dengan kolom lengkap).
--- =====================================================================
-
 CREATE DATABASE IF NOT EXISTS perpustakaan
   CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE perpustakaan;
@@ -88,12 +67,12 @@ CREATE TABLE Buku (
   isbn          VARCHAR(20)  NULL,
   judul         VARCHAR(150) NULL,
   stokFisik     INTEGER      NULL,
-  penulis       VARCHAR(100) NULL,      -- [tambahan]
-  kategori      VARCHAR(50)  NULL,      -- [tambahan]
-  penerbit      VARCHAR(100) NULL,      -- [tambahan]
-  tahunTerbit   INTEGER      NULL,      -- [tambahan]
-  jumlahHalaman INTEGER      NULL,      -- [tambahan]
-  deskripsi     TEXT         NULL,      -- [tambahan]
+  penulis       VARCHAR(100) NULL,
+  kategori      VARCHAR(50)  NULL,
+  penerbit      VARCHAR(100) NULL,
+  tahunTerbit   INTEGER      NULL,
+  jumlahHalaman INTEGER      NULL,
+  deskripsi     TEXT         NULL,
   PRIMARY KEY (idBuku),
   UNIQUE KEY uk_buku_isbn (isbn),
   KEY idx_buku_kategori (kategori),
@@ -142,7 +121,7 @@ CREATE TABLE Denda (
   idDenda      VARCHAR(20) NOT NULL,
   idTransaksi  VARCHAR(20) NULL,
   nominalDenda DOUBLE      NULL,
-  statusBayar  VARCHAR(20) NULL,        -- 'Belum Lunas' | 'Lunas'
+  statusBayar  VARCHAR(20) NULL,
   PRIMARY KEY (idDenda),
   CONSTRAINT fk_denda_peminjaman FOREIGN KEY (idTransaksi) REFERENCES Peminjaman (idTransaksi)
 ) ENGINE=InnoDB;

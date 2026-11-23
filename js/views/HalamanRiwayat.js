@@ -6,13 +6,13 @@ const HalamanRiwayat = {
   _kerangka(isi) {
     app.innerHTML = `<h1>Peminjaman</h1><p class="sub">Daftar buku yang telah Anda reservasi.</p>
     <div class="card"><table>
-      <tr><th>#</th><th>Judul Buku</th><th>Tanggal Reservasi</th><th>Batas Pengambilan</th><th>Status</th></tr>
+      <tr><th>#</th><th>Judul Buku</th><th>Tanggal Reservasi</th><th>Batas Pengambilan</th><th>Batas Pengembalian</th><th>Status</th></tr>
       ${isi}
     </table></div>`;
   },
   tampilkanRiwayatKosong() {
     this._kerangka(
-      '<tr><td colspan="5" style="color:#667085">Belum ada reservasi. Buka Katalog Buku untuk mereservasi buku.</td></tr>',
+      '<tr><td colspan="6" style="color:#667085">Belum ada reservasi. Buka Katalog Buku untuk mereservasi buku.</td></tr>',
     );
   },
   tampilkanRiwayat(daftarTransaksi, daftarReservasi) {
@@ -21,7 +21,7 @@ const HalamanRiwayat = {
       daftarReservasi
         .map(
           (r, i) =>
-            `<tr><td>${i + 1}</td><td><a href="#/buku/${r.bookId}">${esc(r.bookTitle)}</a></td><td>${r.reservedAt}</td><td>${r.expiresAt}</td><td>${esc(r.status)}</td></tr>`,
+            `<tr><td>${i + 1}</td><td><a href="#/buku/${r.bookId}">${esc(r.bookTitle)}</a></td><td>${esc(tanggalIndo(r.reservedAt))}</td><td>${esc(tanggalIndo(r.expiresAt))}</td><td>${esc(tanggalIndo(r.returnBy))}${r.status === "Aktif" ? ' <small style="color:#667085">(paling lambat)</small>' : ""}</td><td>${esc(r.status)}</td></tr>`,
         )
         .join(""),
     );

@@ -9,8 +9,14 @@ const HalamanDetailBuku = {
   },
   konfirmasiReservasi(hasil) {
     $("#stok").textContent = hasil.stock;
-    toast("Reservasi berhasil. Ambil buku sebelum " + hasil.expiresAt + ".");
+    toast("Reservasi berhasil. Ambil buku paling lambat " + tanggalIndo(hasil.expiresAt) + ".");
     $("#btnRes").textContent = "✔ Sudah Direservasi";
+    const info = $("#infoRes");
+    if (info)
+      info.innerHTML = `
+        <div>⏰ <b>Batas pengambilan:</b> ${esc(tanggalIndo(hasil.expiresAt))}</div>
+        <div>📆 <b>Batas pengembalian:</b> ${esc(String(hasil.lamaPinjam))} hari setelah buku diambil
+          (paling lambat ${esc(tanggalIndo(hasil.returnBy))})</div>`;
   },
   mintaLogin() {
     $("#btnRes").disabled = false;

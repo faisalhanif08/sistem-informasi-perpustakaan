@@ -52,7 +52,15 @@ const ReservasiController = {
 
       const r = await Reservasi.simpanReservasi(idPengguna, idBuku, conn);
       const sisa = await Buku.kurangiStok(idBuku, conn);
-      return { kode: 201, hasil: "berhasil", stock: sisa, expiresAt: r.expiresAt, idReservasi: r.id };
+      return {
+        kode: 201,
+        hasil: "berhasil",
+        stock: sisa,
+        expiresAt: r.expiresAt, // batas pengambilan
+        returnBy: r.returnBy, // batas pengembalian paling lambat
+        lamaPinjam: Number(r.lamaPinjam),
+        idReservasi: r.id,
+      };
     });
 
     const { kode, ...body } = hasil;

@@ -21,6 +21,15 @@ function rupiah(n) {
   return "Rp" + (Number(n) || 0).toLocaleString("id-ID");
 }
 
+// "2026-11-25" -> "25 November 2026" (selain format YYYY-MM-DD dikembalikan apa adanya)
+function tanggalIndo(s) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(s || ""));
+  if (!m) return s || "-";
+  const bulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli",
+    "Agustus", "September", "Oktober", "November", "Desember"];
+  return `${+m[3]} ${bulan[+m[2] - 1]} ${m[1]}`;
+}
+
 // "Belum Lunas" -> "s-BelumLunas" (nama kelas CSS untuk label status)
 function kelasStatus(status) {
   return "s-" + String(status || "").replace(/\s+/g, "");
