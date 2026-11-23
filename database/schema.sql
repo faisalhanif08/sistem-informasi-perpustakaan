@@ -91,9 +91,9 @@ CREATE TABLE Peminjaman (
   idBuku        VARCHAR(20) NOT NULL,
   tglPinjam     DATE        NULL,
   tglJatuhTempo DATE        NULL,
-  status        VARCHAR(20) NULL,       -- 'Dipinjam' | 'Dikembalikan' | 'Terlambat'
+  status        VARCHAR(20) NULL,
   idPengguna    VARCHAR(20) NULL,
-  tglKembali    DATE        NULL,       -- [tambahan]
+  tglKembali    DATE        NULL,
   PRIMARY KEY (idTransaksi),
   KEY idx_peminjaman_anggota (idAnggota, status),
   CONSTRAINT fk_peminjaman_anggota  FOREIGN KEY (idAnggota)  REFERENCES Pengguna (idPengguna),
@@ -137,7 +137,7 @@ CREATE TABLE Reservasi (
   idReservasi  VARCHAR(20) NOT NULL,
   idPengguna   VARCHAR(20) NULL,
   idBuku       VARCHAR(20) NULL,
-  status       VARCHAR(20) NULL,        -- 'Aktif' | 'Menunggu' | 'Disetujui' | 'Ditolak'
+  status       VARCHAR(20) NULL,
   tglReservasi DATE        NULL,
   PRIMARY KEY (idReservasi),
   KEY idx_reservasi_pengguna (idPengguna, status),
