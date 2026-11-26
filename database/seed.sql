@@ -2,6 +2,9 @@
 -- DATA AWAL (seed) - dijalankan setelah schema.sql
 -- Akun demo:
 --   pemustaka@perpus.test  / pemustaka123   (Pemustaka)
+--   pemustaka2@perpus.test / pemustaka2123   (Pemustaka)
+--   pemustaka3@perpus.test / pemustaka3123   (Pemustaka)
+--   pemustaka4@perpus.test / pemustaka4123   (Pemustaka)
 --   pustakawan@perpus.test / pustakawan123  (Pustakawan)
 --   admin@perpus.test      / admin123       (Admin)
 -- Password disimpan sebagai hash bcrypt.
@@ -13,11 +16,17 @@ INSERT INTO KonfigurasiSistem (idKonfigurasi, dendaPerHari, maxBukuPinjam, maxHa
 
 INSERT INTO Pengguna (idPengguna, nama, email, password, tipeUser) VALUES
   ('PMK001', 'Pemustaka Demo', 'pemustaka@perpus.test', '$2b$10$IUmibvj47dEHsYjF6m8GoOfuxMfxCF9FLXro/M9fKL5Jb9KBStS2y', 'Pemustaka'),
+  ('PMK002', 'Pemustaka Demo 2', 'pemustaka2@perpus.test', '$2b$10$.pT2FC4EhCXObYOcvnj3Nu17hIMkrZOVUSdcK.jDr/BKk38n6DMwa', 'Pemustaka'),
+  ('PMK003', 'Pemustaka Demo 3', 'pemustaka3@perpus.test', '$2b$10$/wxaJnG/bWQrnC0ZoIkdNewi5M4eNSWS8WpkZhBq/NgC/iRXOyJb.', 'Pemustaka'),
+  ('PMK004', 'Pemustaka Demo 4', 'pemustaka4@perpus.test', '$2b$10$EUWV8idIFBXCj9Qz5DjG3ePTlOjXPbbrxf6NOaqnmhya6ppWDEgoS', 'Pemustaka'),
   ('PST001', 'Pustakawan Demo', 'pustakawan@perpus.test', '$2b$10$Zqg9XY9BrBwYTBWGtnkkpOJGIZLdkQfa2nagiMjUpPtvpaCvbNt7S', 'Pustakawan'),
   ('ADM001', 'Admin Demo', 'admin@perpus.test', '$2b$10$m.jqZ8HvcPV1aOfcxbXFdevIsyXsShr53YvJM9cISNu9c9AUZehRO', 'Admin');
 
 INSERT INTO Pemustaka (idPengguna, kuotaPinjam, statusBebasDenda) VALUES
-  ('PMK001', 5, TRUE);
+  ('PMK001', 5, TRUE),
+  ('PMK002', 5, TRUE),
+  ('PMK003', 5, TRUE),
+  ('PMK004', 5, TRUE);
 
 INSERT INTO Admin (idPengguna, levelAkses, idKonfigurasi) VALUES
   ('ADM001', 'Super', 1);

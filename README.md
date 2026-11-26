@@ -45,6 +45,9 @@ perpustakaan-mvc/
 | Email | Password | Peran |
 |---|---|---|
 | pemustaka@perpus.test | pemustaka123 | Pemustaka |
+| pemustaka2@perpus.test | pemustaka2123 | Pemustaka |
+| pemustaka3@perpus.test | pemustaka3123 | Pemustaka |
+| pemustaka4@perpus.test | pemustaka4123 | Pemustaka |
 | pustakawan@perpus.test | pustakawan123 | Pustakawan |
 | admin@perpus.test | admin123 | Admin |
 
